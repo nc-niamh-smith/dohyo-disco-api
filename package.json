@@ -1,0 +1,23 @@
+{
+  "name": "dohyo-disco-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nc-niamh-smith/dohyo-disco-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nc-niamh-smith/dohyo-disco-api/issues"
+  },
+  "homepage": "https://github.com/nc-niamh-smith/dohyo-disco-api#readme",
+  "dependencies": {
+    "jest": "^29.7.0"
+  }
+}
