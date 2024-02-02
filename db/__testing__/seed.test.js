@@ -115,7 +115,16 @@ describe("seed", () => {
                 "nextval('users_user_id_seq'::regclass)"
             );
         });
-    })
+        test('insert data into users table', async () => {
+            const users = await db.query(`SELECT * FROM users;`);
+            expect(users.rows).toHaveLength(3);
+            users.rows.forEach((user) => {
+                expect(user).toHaveProperty("username");
+                expect(user).toHaveProperty("user_id")
+                expect(user).toHaveProperty("stable_name")
+            });
+        });
+    });
     describe("rikishi table", () => {
         test("rikishi table exists", async () => {
             const query = await db.query(
@@ -128,6 +137,17 @@ describe("seed", () => {
             )
             const exists = query.rows[0].exists;
             expect(exists).toBe(true);
+        });
+        test("rikishi table has a sumoapi_id column as integer", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = 'rikishi'
+                AND column_name = 'sumoapi_id';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("sumoapi_id");
+            expect(column.data_type).toBe("integer");
         });
         test("rikishi table has a sumodb_id column as integer", async () => {
             const query = await db.query(
@@ -240,7 +260,7 @@ describe("seed", () => {
             );
             const column = query.rows[0]
             expect(column.column_name).toBe("height");
-            expect(column.data_type).toBe("integer");
+            expect(column.data_type).toBe("numeric");
         });
         test("rikishi table has a weight column as integer", async () => {
             const query = await db.query(
@@ -251,7 +271,7 @@ describe("seed", () => {
             );
             const column = query.rows[0]
             expect(column.column_name).toBe("weight");
-            expect(column.data_type).toBe("integer");
+            expect(column.data_type).toBe("numeric");
         });
         test("rikishi table has a debut column as VARCHAR", async () => {
             const query = await db.query(
@@ -263,6 +283,26 @@ describe("seed", () => {
             const column = query.rows[0]
             expect(column.column_name).toBe("debut");
             expect(column.data_type).toBe("character varying");
+        });
+        test('insert data into rikishi table', async () => {
+            const rikishi = await db.query(`SELECT * FROM rikishi;`);
+    
+            expect(rikishi.rows).toHaveLength(13);
+            rikishi.rows.forEach((sumo) => {
+                expect(sumo).toHaveProperty("id");
+                expect(sumo).toHaveProperty("sumoapi_id")
+                expect(sumo).toHaveProperty("sumodb_id")
+                expect(sumo).toHaveProperty("nsk_id")
+                expect(sumo).toHaveProperty("shikona_en")
+                expect(sumo).toHaveProperty("shikona_jp")
+                expect(sumo).toHaveProperty("current_rank")
+                expect(sumo).toHaveProperty("heya")
+                expect(sumo).toHaveProperty("birth_date")
+                expect(sumo).toHaveProperty("shusshin")
+                expect(sumo).toHaveProperty("height")
+                expect(sumo).toHaveProperty("weight")
+                expect(sumo).toHaveProperty("debut")
+            });
         });
     });
     describe('stables_sumos_junc table', () => {

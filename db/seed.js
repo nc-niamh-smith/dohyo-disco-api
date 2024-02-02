@@ -1,5 +1,5 @@
 const db = require('./connection.js')
-const {insertStables} = require('./utils/insertData.js')
+const {insertStables, insertUsers, insertRikishi} = require('./utils/insertData.js')
 
 const seed = async ({users, stables, rikishi}) => {
     await db.query(`DROP TABLE IF EXISTS users;`)
@@ -21,6 +21,7 @@ const seed = async ({users, stables, rikishi}) => {
     //create sumos
     await db.query(`CREATE TABLE rikishi (
         id SERIAL PRIMARY KEY NOT NULL,
+        sumoapi_id INT NOT NULL,
         sumodb_id INT NOT NULL,
         nsk_id INT NOT NULL,
         shikona_en VARCHAR(50),
@@ -29,8 +30,8 @@ const seed = async ({users, stables, rikishi}) => {
         heya VARCHAR(50),
         birth_date DATE,
         shusshin VARCHAR(100),
-        height INT,
-        weight INT,
+        height DECIMAL,
+        weight DECIMAL,
         debut VARCHAR(6)
     );`)
     //create junction table (many to many)
@@ -42,9 +43,11 @@ const seed = async ({users, stables, rikishi}) => {
     //populate stables
     await insertStables(stables)
     //populate users
+    await insertUsers(users)
     //populate sumos
-
+    await insertRikishi(rikishi)
     //populate junction table
+    
 }
 
 
