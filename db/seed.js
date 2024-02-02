@@ -1,15 +1,16 @@
 const db = require('./connection.js')
+const {insertStables} = require('./utils/insertData.js')
 
 const seed = async ({users, stables, rikishi}) => {
     await db.query(`DROP TABLE IF EXISTS users;`)
+    await db.query(`DROP TABLE IF EXISTS stables_sumos_junc;`)
     await db.query(`DROP TABLE IF EXISTS stables;`)
     await db.query(`DROP TABLE IF EXISTS rikishi;`)
-    await db.query(`DROP TABLE IF EXISTS stables_sumos_junc;`)
     //create stables
     await db.query(`CREATE TABLE stables (
         stable_name VARCHAR(500) UNIQUE,
         stable_id SERIAL PRIMARY KEY,
-        ranking INTEGER
+        ranking INTEGER DEFAULT 0
     );`)
     //create users
     await db.query(`CREATE TABLE users (
@@ -18,7 +19,6 @@ const seed = async ({users, stables, rikishi}) => {
         user_id SERIAL PRIMARY KEY NOT NULL
     );`)
     //create sumos
-
     await db.query(`CREATE TABLE rikishi (
         id SERIAL PRIMARY KEY NOT NULL,
         sumodb_id INT NOT NULL,
@@ -33,20 +33,19 @@ const seed = async ({users, stables, rikishi}) => {
         weight INT,
         debut VARCHAR(6)
     );`)
-    
     //create junction table (many to many)
-    
     await db.query(`CREATE TABLE stables_sumos_junc (
         stable_id INTEGER REFERENCES stables(stable_id),
         sumo_id INTEGER REFERENCES rikishi(id),
         id SERIAL PRIMARY KEY
     );`)
     //populate stables
+    await insertStables(stables)
     //populate users
     //populate sumos
+
     //populate junction table
 }
-
 
 
 module.exports = seed;

@@ -44,7 +44,7 @@ describe("seed", () => {
                 "nextval('stables_stable_id_seq'::regclass)"
             );
         });
-        test('stables has a ranking column as an integer that initialises as null', async () => {
+        test('stables has a ranking column as an integer that initialises as 0', async () => {
             const query = await db.query(
                 `SELECT column_name, data_type, column_default
                 FROM information_schema.columns
@@ -54,7 +54,16 @@ describe("seed", () => {
             const column = query.rows[0]
             expect(column.column_name).toBe("ranking");
             expect(column.data_type).toBe("integer");
-            expect(column.column_default).toBe(null);
+            expect(column.column_default).toBe("0");
+        })
+        test('insert into stables table', async () => {
+                const stables = await db.query(`SELECT * FROM stables;`);
+                expect(stables.rows).toHaveLength(3);
+                stables.rows.forEach((stable) => {
+                    expect(stable).toHaveProperty("stable_name");
+                    expect(stable).toHaveProperty("stable_id")
+                    expect(stable).toHaveProperty("ranking")
+                })
         })
     });
     describe("users table", () => {
@@ -127,7 +136,6 @@ describe("seed", () => {
                 WHERE table_name = 'rikishi'
                 AND column_name = 'sumodb_id';`
             );
-            console.log(query)
             const column = query.rows[0]
             expect(column.column_name).toBe("sumodb_id");
             expect(column.data_type).toBe("integer");

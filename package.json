@@ -6,7 +6,8 @@
   "scripts": {
     "test-seed": "PGDATABASE=dohyo_disco_test jest seed.test.js",
     "setup-db": "psql -f ./db/setup.sql",
-    "seed": "PGDATABASE=dohyo_disco node db/run-seed.js"
+    "seed": "PGDATABASE=dohyo_disco node db/run-seed.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
