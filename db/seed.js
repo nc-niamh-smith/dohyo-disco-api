@@ -34,20 +34,12 @@ const seed = async ({users, stables, rikishi}) => {
         weight DECIMAL,
         debut VARCHAR(6)
     );`)
-    //create junction table (many to many)
-    await db.query(`CREATE TABLE stables_sumos_junc (
-        stable_id INTEGER REFERENCES stables(stable_id),
-        sumo_id INTEGER REFERENCES rikishi(id),
-        id SERIAL PRIMARY KEY
-    );`)
     //populate stables
     await insertStables(stables)
     //populate users
     await insertUsers(users)
     //populate sumos
     await insertRikishi(rikishi)
-    //populate junction table
-    
 }
 
 

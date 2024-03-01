@@ -20,5 +20,4 @@ const insertRikishi = async (rikishi) => {
     return db.query(query)
 }
 
-
 module.exports = {insertStables, insertUsers, insertRikishi}

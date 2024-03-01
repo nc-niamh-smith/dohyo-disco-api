@@ -16,4 +16,5 @@ const arrangeRikishi = (rikishis) => {
     })
 }
 
+
 module.exports = {arrangeStables, arrangeUsers, arrangeRikishi}
