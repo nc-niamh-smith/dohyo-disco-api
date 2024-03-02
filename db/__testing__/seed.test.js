@@ -229,7 +229,7 @@ describe("seed", () => {
             expect(column.column_name).toBe("heya");
             expect(column.data_type).toBe("character varying");
         });
-        test("rikishi table has a birth_date column as DATE", async () => {
+        test("rikishi table has a birth_date column as VARCHAR", async () => {
             const query = await db.query(
                 `SELECT column_name, data_type
                 FROM information_schema.columns
@@ -238,7 +238,7 @@ describe("seed", () => {
             );
             const column = query.rows[0]
             expect(column.column_name).toBe("birth_date");
-            expect(column.data_type).toBe("date");
+            expect(column.data_type).toBe("character varying");
         });
         test("rikishi table has a shusshin column as VARCHAR", async () => {
             const query = await db.query(

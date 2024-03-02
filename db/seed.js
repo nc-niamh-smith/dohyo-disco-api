@@ -28,7 +28,7 @@ const seed = async ({users, stables, rikishi}) => {
         shikona_jp VARCHAR(50),
         current_rank VARCHAR(100),
         heya VARCHAR(50),
-        birth_date DATE,
+        birth_date VARCHAR(50),
         shusshin VARCHAR(100),
         height DECIMAL,
         weight DECIMAL,
