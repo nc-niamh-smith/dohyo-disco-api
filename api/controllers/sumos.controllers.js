@@ -1,4 +1,4 @@
-const { selectSumos, selectSumoById } = require("../models/sumos.models")
+const { selectSumos, selectSumoById, addSumo } = require("../models/sumos.models")
 
 
 exports.getSumos = async (req, res, next) => {
@@ -12,6 +12,17 @@ exports.getSumoById = async (req, res, next) => {
         const {id} = req.params;
         const sumo = await selectSumoById(id)
         res.status(200).send({sumo})
+    }
+    catch(err) {
+        next(err)
+    }
+}
+
+exports.postSumo = async (req, res, next) => {
+    const newSumo = req.body
+    try { 
+        const sumo = await addSumo(newSumo)
+        res.status(201).send({sumo})
     }
     catch(err) {
         next(err)

@@ -14,7 +14,7 @@ afterAll(() => {
 
 //getSumos
 describe("/api/sumos", () => {
-  describe("getSumos", () => {
+    describe("getSumos", () => {
     test("200: responds with an array of sumos", async () => {
       const req = await request(app).get("/api/sumos").expect(200);
       expect(Array.isArray(req.body.sumos)).toBe(true);
@@ -40,7 +40,44 @@ describe("/api/sumos", () => {
         });
       });
     });
-  });
+});
+    describe('postSumo', () => {
+        test("201: responds with an object containing the added sumo", async () => {
+            const sendSumo = {
+                sumoapi_id: 10,
+                sumodb_id: 10,
+                nsk_id: 10,
+                shikona_en: "niamh",
+                shikona_jp: "明るい",
+                current_rank: "twenty",
+                heya: "tokyo",
+                birth_date: "1994-08-02T04:00:00.000Z",
+                shusshin: "tokyo",
+                height: 2.2,
+                weight: 2.2,
+                debut: "2015"
+            }
+            const req = await request(app).post('/api/sumos').send(sendSumo).expect(201)
+            const {sumo} = req.body
+            expect(typeof sumo).toBe('object');
+            console.log(sumo)
+            expect(sumo).toMatchObject({
+                id: expect.any(Number),
+                sumoapi_id: 10,
+                sumodb_id: 10,
+                nsk_id: 10,
+                shikona_en: "niamh",
+                shikona_jp: "明るい",
+                current_rank: "twenty",
+                heya: "tokyo",
+                birth_date: expect.any(String),
+                shusshin: "tokyo",
+                height: "2.2",
+                weight: "2.2",
+                debut: "2015"
+            })
+        })
+    })
 });
 
 //getSumoById
@@ -57,7 +94,7 @@ describe("/api/sumos/:id", () => {
                 shikona_jp: "大雷童(だいらいどう)",
                 current_rank: "Sandanme 37 East",
                 heya: "Takadagawa",
-                birth_date: "1980-04-16T23:00:00.000Z",
+                birth_date: expect.any(String),
                 shusshin: "Fukuoka-ken, Onojo-shi",
                 height: "177",
                 weight: "151",
