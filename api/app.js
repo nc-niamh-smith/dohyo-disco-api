@@ -1,5 +1,6 @@
 const express = require('express');
 const { getSumos, getSumoById, postSumo } = require('./controllers/sumos.controllers');
+const { customErrorHandler, PSQLErrors, serverError } = require('./errors/errors');
 
 const app = express();
 
@@ -10,11 +11,8 @@ app.post('/api/sumos', postSumo)
 
 app.get('/api/sumos/:id', getSumoById)
 
-app.use((err, req, res, next) => {
-    console.log(err)
-    if(err.msg) {
-        res.status(404).send({msg: err.msg})
-    }
-})
+app.use(customErrorHandler)
+app.use(PSQLErrors)
+app.use(serverError)
 
 module.exports = app

@@ -60,7 +60,6 @@ describe("/api/sumos", () => {
             const req = await request(app).post('/api/sumos').send(sendSumo).expect(201)
             const {sumo} = req.body
             expect(typeof sumo).toBe('object');
-            console.log(sumo)
             expect(sumo).toMatchObject({
                 id: expect.any(Number),
                 sumoapi_id: 10,
@@ -76,6 +75,12 @@ describe("/api/sumos", () => {
                 weight: "2.2",
                 debut: "2015"
             })
+        })
+        test("400: responds with a message explaining a bad request has been made when the sumo is empty", async () => {
+            const sendSumo = {}
+            const req = await request(app).post('/api/sumos').send(sendSumo).expect(400)
+            const {msg} = req.body
+            expect(msg).toBe("Invalid input")
         })
     })
 });
@@ -104,6 +109,10 @@ describe("/api/sumos/:id", () => {
         test("404: responds with a not found message", async () => {
             const req = await request(app).get("/api/sumos/12345678").expect(404);
             expect(req.body.msg).toBe("Rikishi not found")
+        })
+        test("400: responds with an invalid id message", async () => {
+            const req = await request(app).get("/api/sumos/not_an_id").expect(400);
+            expect(req.body.msg).toBe("Invalid input")
         })
     });
 });
