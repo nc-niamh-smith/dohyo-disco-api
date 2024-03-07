@@ -12,14 +12,14 @@ afterAll(() => {
     return db.end();
 });
 
-//getSumos
+//getSumos, postSumo
 describe("/api/sumos", () => {
     describe("getSumos", () => {
-    test("200: responds with an array of sumos", async () => {
+        test("200: responds with an array of sumos", async () => {
       const req = await request(app).get("/api/sumos").expect(200);
       expect(Array.isArray(req.body.sumos)).toBe(true);
-    });
-    test("200: each element in the array contains the correct key-value pairs", async () => {
+        });
+        test("200: each element in the array contains the correct key-value pairs", async () => {
       const { body } = await request(app).get("/api/sumos").expect(200);
       expect(body.sumos.length).toBeGreaterThan(0);
       body.sumos.forEach((sumo) => {
@@ -39,7 +39,7 @@ describe("/api/sumos", () => {
           debut: expect.any(String),
         });
       });
-    });
+        });
 });
     describe('postSumo', () => {
         test("201: responds with an object containing the added sumo", async () => {
@@ -85,7 +85,7 @@ describe("/api/sumos", () => {
     })
 });
 
-//getSumoById
+//getSumoById, patchSumo, deleteSumo
 describe("/api/sumos/:id", () => {
     describe("getSumoById", () => {
         test("200: responds with a sumo object with the corresponding id", async () => {
@@ -112,14 +112,78 @@ describe("/api/sumos/:id", () => {
         })
         test("400: responds with an invalid id message", async () => {
             const req = await request(app).get("/api/sumos/not_an_id").expect(400);
-            expect(req.body.msg).toBe("Invalid input")
+            expect(req.body.msg).toBe("Invalid input");
+        });
+    });
+    describe('patchSumo', () => {
+        test("200: updates a sumo when given the correct id", async () => {
+            const sumoUpdates = {weight: "160"}
+            const req = await request(app).patch('/api/sumos/1').send(sumoUpdates).expect(200)
+            const {sumo} = req.body
+            expect(sumo).toMatchObject({
+                id: 1,
+                sumoapi_id: 218,
+                sumodb_id: 300,
+                nsk_id: 1306,
+                shikona_en: "Dairaido",
+                shikona_jp: "大雷童(だいらいどう)",
+                current_rank: "Sandanme 37 East",
+                heya: "Takadagawa",
+                birth_date: expect.any(String),
+                shusshin: "Fukuoka-ken, Onojo-shi",
+                height: "177",
+                weight: "160",
+                debut: "199603",
+            });
+        });
+        test("200: ignores secondary properties on objects", async () => {
+            const sumoUpdates = {weight: "160", height: "55"}
+            const req = await request(app).patch('/api/sumos/1').send(sumoUpdates).expect(200)
+            const {sumo} = req.body
+            expect(sumo).toMatchObject({
+                id: 1,
+                sumoapi_id: 218,
+                sumodb_id: 300,
+                nsk_id: 1306,
+                shikona_en: "Dairaido",
+                shikona_jp: "大雷童(だいらいどう)",
+                current_rank: "Sandanme 37 East",
+                heya: "Takadagawa",
+                birth_date: expect.any(String),
+                shusshin: "Fukuoka-ken, Onojo-shi",
+                height: "177",
+                weight: "160",
+                debut: "199603",
+            });
         })
+        test("404: responds with an invalid input message when sent non-existent column", async () => {
+            const sumoUpdates = {weigh: "160"}
+            const req = await request(app).patch('/api/sumos/1').send(sumoUpdates).expect(404)
+            const {msg} = req.body
+            expect(msg).toBe("Not found")
+        })
+        test("400: responds with a bad request input when no updates are found", async () => {
+            const req = await request(app).patch("/api/sumos/not_an_id").expect(400);
+            expect(req.body.msg).toBe("Bad request")
+        })
+        test("400: responds with a bad request when a property has the wrong value", async () => {
+            const sumoUpdates = {weight: true}
+            const req = await request(app).patch('/api/sumos/1').send(sumoUpdates).expect(400)
+            const {msg} = req.body
+            expect(msg).toBe("Invalid input")
+        })
+    });
+    describe('deleteSumo', () => {
+        test('201: responds with a status code of 201', () => {
+            return request(app).delete('/api/sumos/1').expect(201)
+        });
+        test('404: responds with a not found message when the client tries to delete a non-existent sumo', async () => {
+            const req = await request(app).delete('/api/sumos/2345678').expect(404);
+            expect(req.body.msg).toBe("Rikishi not found");
+        });
     });
 });
 
-//postSumo
-
-//patchSumo
 
 //deleteSumo
 
