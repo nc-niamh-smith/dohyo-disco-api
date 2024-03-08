@@ -20,23 +20,23 @@ describe("/api/sumos", () => {
       expect(Array.isArray(req.body.sumos)).toBe(true);
         });
         test("200: each element in the array contains the correct key-value pairs", async () => {
-      const { body } = await request(app).get("/api/sumos").expect(200);
-      expect(body.sumos.length).toBeGreaterThan(0);
-      body.sumos.forEach((sumo) => {
+        const { body } = await request(app).get("/api/sumos").expect(200);
+        expect(body.sumos.length).toBeGreaterThan(0);
+        body.sumos.forEach((sumo) => {
         expect(sumo).toMatchObject({
-          id: expect.any(Number),
-          sumoapi_id: expect.any(Number),
-          sumodb_id: expect.any(Number),
-          nsk_id: expect.any(Number),
-          shikona_en: expect.any(String),
-          shikona_jp: expect.any(String),
-          current_rank: expect.any(String),
-          heya: expect.any(String),
-          birth_date: expect.any(String),
-          shusshin: expect.any(String),
-          height: expect.any(String),
-          weight: expect.any(String),
-          debut: expect.any(String),
+            id: expect.any(Number),
+            sumoapi_id: expect.any(Number),
+            sumodb_id: expect.any(Number),
+            nsk_id: expect.any(Number),
+            shikona_en: expect.any(String),
+            shikona_jp: expect.any(String),
+            current_rank: expect.any(String),
+            heya: expect.any(String),
+            birth_date: expect.any(String),
+            shusshin: expect.any(String),
+            height: expect.any(String),
+            weight: expect.any(String),
+            debut: expect.any(String),
         });
       });
         });
@@ -185,9 +185,26 @@ describe("/api/sumos/:id", () => {
 });
 
 
-//deleteSumo
-
 //getStables
+describe("/api/stables", () => {
+    describe('getStables', () => {
+        test("200: responds with an array of stables", async () => {
+            const req = await request(app).get("/api/stables").expect(200);
+            expect(Array.isArray(req.body.stables)).toBe(true);
+        });
+        test("200: each element in the array should contain the correct key-value pairs", async () => {
+            const {body} = await request(app).get("/api/stables").expect(200);
+            expect(body.stables.length).toBeGreaterThan(0);
+            body.stables.forEach((stable) => {
+                expect(stable).toMatchObject({
+                    stable_name: expect.any(String),
+                    stable_id: expect.any(Number),
+                    ranking: expect.any(Number)
+                })
+            })
+        })
+    });
+});
 
 //getStableById
 
