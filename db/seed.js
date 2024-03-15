@@ -3,21 +3,9 @@ const {insertStables, insertUsers, insertRikishi} = require('./utils/insertData.
 
 const seed = async ({users, stables, rikishi}) => {
     await db.query(`DROP TABLE IF EXISTS users;`)
-    await db.query(`DROP TABLE IF EXISTS stables_sumos_junc;`)
     await db.query(`DROP TABLE IF EXISTS stables;`)
     await db.query(`DROP TABLE IF EXISTS rikishi;`)
-    //create stables
-    await db.query(`CREATE TABLE stables (
-        stable_name VARCHAR(500) UNIQUE,
-        stable_id SERIAL PRIMARY KEY,
-        ranking INTEGER DEFAULT 0
-    );`)
-    //create users
-    await db.query(`CREATE TABLE users (
-        username VARCHAR(50),
-        stable_name VARCHAR REFERENCES stables(stable_name) NOT NULL,
-        user_id SERIAL PRIMARY KEY NOT NULL
-    );`)
+
     //create sumos
     await db.query(`CREATE TABLE rikishi (
         id SERIAL PRIMARY KEY NOT NULL,
@@ -33,6 +21,20 @@ const seed = async ({users, stables, rikishi}) => {
         height DECIMAL,
         weight DECIMAL,
         debut VARCHAR(6)
+    );`)
+    //create stables
+    await db.query(`CREATE TABLE stables (
+        stable_name VARCHAR(500) UNIQUE,
+        stable_id SERIAL PRIMARY KEY,
+        ranking INTEGER DEFAULT 0,
+        rikishi INTEGER, 
+        FOREIGN KEY (rikishi) REFERENCES rikishi(id)
+    );`)
+    //create users
+    await db.query(`CREATE TABLE users (
+        username VARCHAR(50),
+        stable_name VARCHAR REFERENCES stables(stable_name) NOT NULL,
+        user_id SERIAL PRIMARY KEY NOT NULL
     );`)
     //populate stables
     await insertStables(stables)

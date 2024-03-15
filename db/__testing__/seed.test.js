@@ -56,6 +56,17 @@ describe("seed", () => {
             expect(column.data_type).toBe("integer");
             expect(column.column_default).toBe("0");
         })
+        test.only("stables table has a rikishi column as a reference to rikishi table", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = 'stables'
+                AND column_name = 'rikishi';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("rikishi");
+            expect(column.data_type).toBe("integer");
+        });
         test('insert into stables table', async () => {
                 const stables = await db.query(`SELECT * FROM stables;`);
                 expect(stables.rows).toHaveLength(3);
