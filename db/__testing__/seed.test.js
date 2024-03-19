@@ -56,7 +56,7 @@ describe("seed", () => {
             expect(column.data_type).toBe("integer");
             expect(column.column_default).toBe("0");
         })
-        test.only("stables table has a rikishi column as a reference to rikishi table", async () => {
+        test("stables table has a rikishi column as a reference to rikishi_stable table", async () => {
             const query = await db.query(
                 `SELECT column_name, data_type
                 FROM information_schema.columns
@@ -314,6 +314,100 @@ describe("seed", () => {
                 expect(sumo).toHaveProperty("weight")
                 expect(sumo).toHaveProperty("debut")
             });
+        });
+    });
+    describe("rikishi_stable table", () => {
+        test("rikishi_stable table exists", async () => {
+            const query = await db.query(
+                `SELECT EXISTS (
+                    SELECT FROM
+                    information_schema.tables
+                    WHERE
+                    table_name = 'rikishi_stable'
+                );`
+            )
+            const exists = query.rows[0].exists;
+            expect(exists).toBe(true);
+        });
+        test("rikishi_stable table has a rikishi_stable_id column as a serial primary key", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type, column_default
+                FROM information_schema.columns
+                WHERE table_name = 'rikishi_stable'
+                AND column_name = 'rikishi_stable_id';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("rikishi_stable_id");
+            expect(column.data_type).toBe("integer");
+            expect(column.column_default).toBe(
+                "nextval('rikishi_stable_rikishi_stable_id_seq'::regclass)"
+            );
+        });
+        test("rikishi_stable table has a one column as integer", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = 'rikishi_stable'
+                AND column_name = 'one';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("one");
+            expect(column.data_type).toBe("integer");
+        });
+        test("rikishi_stable table has a two column as integer", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = 'rikishi_stable'
+                AND column_name = 'two';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("two");
+            expect(column.data_type).toBe("integer");
+        });
+        test("rikishi_stable table has a three column as integer", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = 'rikishi_stable'
+                AND column_name = 'three';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("three");
+            expect(column.data_type).toBe("integer");
+        });
+        test("rikishi_stable table has a four column as integer", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = 'rikishi_stable'
+                AND column_name = 'four';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("four");
+            expect(column.data_type).toBe("integer");
+        });
+        test("rikishi_stable table has a five column as integer", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = 'rikishi_stable'
+                AND column_name = 'five';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("five");
+            expect(column.data_type).toBe("integer");
+        });
+        test("rikishi_stable table has a six column as integer", async () => {
+            const query = await db.query(
+                `SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_name = 'rikishi_stable'
+                AND column_name = 'six';`
+            );
+            const column = query.rows[0]
+            expect(column.column_name).toBe("six");
+            expect(column.data_type).toBe("integer");
         });
     });
 });
