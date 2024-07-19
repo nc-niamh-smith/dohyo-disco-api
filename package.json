@@ -9,8 +9,6 @@
     "seed": "PGDATABASE=dohyo_disco node db/run-seed.js",
     "test": "jest",
     "test-api": "jest app.test.js",
-    "start": "node listen.js",
-    "seed-prod": "NODE_ENV=production npm run seed"
   },
   "repository": {
     "type": "git",
