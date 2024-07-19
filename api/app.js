@@ -1,7 +1,7 @@
 const express = require('express');
 const { getSumos, getSumoById, postSumo, patchSumoById, deleteSumo } = require('./controllers/sumos.controllers');
 const { customErrorHandler, PSQLErrors, serverError } = require('./errors/errors');
-const { getStables } = require('./controllers/stables.controllers');
+const { getStables, getStableById, postStable, patchStable } = require('./controllers/stables.controllers');
 
 const app = express();
 
@@ -15,6 +15,10 @@ app.patch('/api/sumos/:id', patchSumoById)
 app.delete('/api/sumos/:id', deleteSumo)
 
 app.get('/api/stables', getStables)
+app.post('/api/stables', postStable);
+
+app.get('/api/stables/:stable_id', getStableById)
+// app.patch('/api/stables/:stable_id', patchStable)
 
 app.use(customErrorHandler)
 app.use(PSQLErrors)

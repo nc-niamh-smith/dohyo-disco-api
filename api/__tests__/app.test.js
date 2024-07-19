@@ -16,8 +16,8 @@ afterAll(() => {
 describe("/api/sumos", () => {
     describe("getSumos", () => {
         test("200: responds with an array of sumos", async () => {
-      const req = await request(app).get("/api/sumos").expect(200);
-      expect(Array.isArray(req.body.sumos)).toBe(true);
+        const req = await request(app).get("/api/sumos").expect(200);
+        expect(Array.isArray(req.body.sumos)).toBe(true);
         });
         test("200: each element in the array contains the correct key-value pairs", async () => {
         const { body } = await request(app).get("/api/sumos").expect(200);
@@ -185,7 +185,7 @@ describe("/api/sumos/:id", () => {
 });
 
 
-//getStables
+//getStables, postStable
 describe("/api/stables", () => {
     describe('getStables', () => {
         test("200: responds with an array of stables", async () => {
@@ -204,13 +204,57 @@ describe("/api/stables", () => {
             })
         })
     });
+    describe('postStable', () => {
+        test("201: responds with the added stable object with a default ranking of 0", async () => {
+            const stableToAdd = {stable_name: 'niamhs stable'}
+            const {body} = await request(app).post('/api/stables').send(stableToAdd).expect(201);
+            expect(body.stable).toMatchObject({
+                stable_name: 'niamhs stable',
+                stable_id: expect.any(Number),
+                ranking: 0
+            });
+        });
+        test("400: responds with an error message when the wrong ", async() => {
+            const stableToAdd = {stable_name: 2};
+// NEED TO FINISH THIS 
+        })
+    });
 });
 
-//getStableById
+//getStableById, patchStable
+// describe.only("/api/stables/:stable_id", () => {
+//     describe('getStableById', () => {
+//         test('200: should return a stable object with the corresponding id', async () => {
+//             const {body} = await request(app).get("/api/stables/1").expect(200)
+//             expect(body.stable).toMatchObject({
+//                 stable_name: "honshu",
+//                 stable_id: 1,
+//                 ranking: expect.any(Number)
+//             });
+//         });
+//         test('404: responds with a not found message if the stable id does not exist', async () => {
+//             const {body} = await request(app).get("/api/stables/23456").expect(404)
+//             expect(body.msg).toBe('ID not found')
+//         });
+//         test('400: responds with a bad request message if the stable id is invalid', async () => {
+//             const {body} = await request(app).get("/api/stables/not_an_id").expect(400)
+//             expect(body.msg).toBe("Invalid input")
+//         });
+//     });
+//     describe('patchStable', () => {
+//         test('201: should return the updated stable object with the corresponding id and the the rikishi id added to an array', async () => {
+//             const updates = [{rikishi_id: 1}, {rikishi_id: 2}, {rikishi_id: 3}, {rikishi_id: 4}, {rikishi_id: 5}, {rikishi_id: 6}]
+//             const {body} = await request(app).patch("/api/stables/1").send(updates).expect(201);
+//             expect(body.stable).toMatchObject({
+//                 stable_name: "honshu",
+//                 stable_id: 1,
+//                 ranking: expect.any(Number),
+//                 rikishi: [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}]
+//             });
+//         });
+//     });
+// });
 
-//postStable
-
-//patchStable
 
 //deleteStable
 
