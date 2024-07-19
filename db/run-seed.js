@@ -1,3 +1,4 @@
 const seed = require("./seed");
+const {users, rikishi, stables} = require('./test-data/index')
 
-seed()
+seed({users, stables, rikishi})
