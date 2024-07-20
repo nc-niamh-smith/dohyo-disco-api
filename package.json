@@ -8,7 +8,7 @@
     "setup-db": "psql -f ./db/setup.sql",
     "seed": "PGDATABASE=dohyo_disco node db/run-seed.js",
     "test": "jest",
-    "test-api": "jest app.test.js",
+    "test-api": "jest app.test.js"
   },
   "repository": {
     "type": "git",
